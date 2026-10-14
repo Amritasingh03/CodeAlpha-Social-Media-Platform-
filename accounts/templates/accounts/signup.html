@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join ConnectHub</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(135deg,#eef2ff,#f5e9ff);font-family:Arial,sans-serif;color:#20243a}.card{background:white;padding:32px;width:min(420px,92%);border-radius:20px;box-shadow:0 12px 40px #25255a20}h1{text-align:center;color:#5b4bdb;margin-bottom:8px}p{text-align:center;color:#687086}.field{margin:16px 0}label{display:block;margin-bottom:6px;font-weight:bold}input{width:100%;padding:12px;border:1px solid #d7d9e5;border-radius:9px}button{width:100%;padding:13px;background:#6254e8;color:white;border:0;border-radius:9px;font-size:16px;font-weight:bold;cursor:pointer}button:hover{background:#4b3cc9}.errors{color:#c62828;font-size:13px}.bottom{text-align:center;margin-top:20px;font-size:14px}a{color:#5547d7}
+</style>
+</head>
+<body><main class="card"><h1>Join ConnectHub</h1><p>Create your account and connect with everyone.</p>
+<form method="post">{% csrf_token %}
+{% if form.non_field_errors %}<div class="errors">{{ form.non_field_errors }}</div>{% endif %}
+{% for field in form %}<div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="errors">{{ field.help_text|safe }}</div>{% endif %}{% for error in field.errors %}<div class="errors">{{ error }}</div>{% endfor %}</div>{% endfor %}
+<button type="submit">Create Account</button></form><div class="bottom">Already have an account? <a href="{% url 'login' %}">Log in</a></div><div class="bottom"><a href="/">Back to Home</a></div></main></body></html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html><html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile | ConnectHub</title>
+    <style>
+        * { box-sizing: border-box; }    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #f0f2f5;
+        color: #1c1e21;
+    }
+
+    header {
+        background: #1877f2;
+        color: white;
+        padding: 18px 7%;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .card {
+        max-width: 550px;
+        margin: 45px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px #00000012;
+    }
+
+    h1 { margin-top: 0; }
+
+    label {
+        display: block;
+        margin: 20px 0 8px;
+        font-weight: bold;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 150px;
+        padding: 14px;
+        font: inherit;
+        border: 1px solid #ccd0d5;
+        border-radius: 8px;
+        resize: vertical;
+    }
+
+    .hint {
+        color: #65676b;
+        font-size: 13px;
+    }
+
+    button, .back {
+        display: inline-block;
+        margin-top: 18px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        background: #1877f2;
+        color: white;
+        font-size: 15px;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .back {
+        background: #65676b;
+        margin-left: 6px;
+    }
+
+    @media (max-width: 600px) {
+        .card {
+            margin: 25px 14px;
+            padding: 22px;
+        }
+    }
+</style>
+
+</head>
+<body>
+    <header>ConnectHub</header><main class="card">
+    <h1>Edit Profile</h1>
+    <p>Update your bio so people can learn more about you.</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="bio">About Me</label>
+
+        <textarea
+            id="bio"
+            name="bio"
+            maxlength="300"
+            placeholder="Write something about yourself..."
+        >{{ profile.bio }}</textarea>
+
+        <p class="hint">Maximum 300 characters.</p>
+
+        <button type="submit">Save Changes</button>
+        <a class="back" href="{% url 'profile' %}">Cancel</a>
+    </form>
+</main>
+
+</body>
+</html>

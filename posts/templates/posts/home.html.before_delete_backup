@@ -1,0 +1,237 @@
+<<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConnectHub - Social Media</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            color: #222;
+        }
+
+        header {
+            background: white;
+            padding: 18px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        .logo {
+            color: #1877f2;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        header input {
+            padding: 12px 18px;
+            border: none;
+            border-radius: 25px;
+            background: #f0f2f5;
+        }
+
+        main {
+            max-width: 650px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .welcome, .card {
+            background: white;
+            padding: 24px;
+            border-radius: 14px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+
+        .welcome {
+            background: linear-gradient(120deg, #1877f2, #805ad5);
+            color: white;
+        }
+
+        .welcome h2 {
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            margin-bottom: 15px;
+        }
+
+        input[name="author"], textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 12px;
+            font-family: Arial, sans-serif;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 11px 18px;
+            margin-top: 8px;
+            border: none;
+            border-radius: 8px;
+            background: #1877f2;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            opacity: 0.88;
+        }
+
+        .post-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .avatar {
+            background: #dbeafe;
+            border-radius: 50%;
+            padding: 12px;
+            font-size: 23px;
+        }
+
+        .post-content {
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+        }
+
+        .actions {
+            border-top: 1px solid #eee;
+            margin-top: 18px;
+            padding-top: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .actions button {
+            background: #edf2f7;
+            color: #222;
+            flex: 1;
+        }
+
+        .empty-message {
+            color: #666;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 15px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            header input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="logo">ConnectHub</div>
+        <input type="search" id="search" placeholder="Search posts...">
+    </header>
+
+    <main>
+        <section class="welcome">
+            <h2>Welcome to ConnectHub! 👋</h2>
+            <p>Share your thoughts and connect with your community.</p>
+        </section>
+
+        <section class="card">
+            <h3>Create a Post ✍️</h3>
+
+            <form id="postForm" method="POST">
+                {% csrf_token %}
+
+                <input
+                    type="text"
+                    name="author"
+                    placeholder="Your name (optional)"
+                    maxlength="100"
+                >
+
+                <textarea
+                    id="postInput"
+                    name="content"
+                    placeholder="What's on your mind?"
+                    maxlength="2000"
+                    required
+                ></textarea>
+
+                <button type="submit">＋ Share Post</button>
+            </form>
+        </section>
+
+        <div id="postsContainer">
+            {% for post in posts %}
+            <article class="card">
+                <div class="post-head">
+                    <div class="avatar">👤</div>
+                    <div>
+                        <strong>{{ post.author }}</strong>
+                        <p style="color:gray;margin-top:5px">
+                            {{ post.created_at|date:"d M Y, h:i A" }}
+                        </p>
+                    </div>
+                </div>
+
+                <p class="post-content">{{ post.content }}</p>
+
+                <div class="actions">
+                    <form method="POST" action="{% url 'like_post' post.id %}" style="flex:1">
+                        {% csrf_token %}
+                        <button type="submit" class="like" style="width:100%">Like {{ post.likes }}</button>
+                    </form>
+                </div>
+            </article>
+            {% empty %}
+            <article class="card">
+                <p class="empty-message">
+                    No posts yet. Be the first to share something! 🎉
+                </p>
+            </article>
+            {% endfor %}
+        </div>
+    </main>
+
+    <script>
+        const search = document.getElementById("search");
+
+        search.addEventListener("input", function () {
+            const query = search.value.toLowerCase();
+
+            document.querySelectorAll("#postsContainer article")
+                .forEach(function (post) {
+                    post.hidden = !post.textContent
+                        .toLowerCase()
+                        .includes(query);
+                });
+        });
+    </script>
+</body>
+</html>

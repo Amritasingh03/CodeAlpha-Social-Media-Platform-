@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | ConnectHub</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            color: #222;
+        }
+        header {
+            background: #1877f2;
+            color: white;
+            padding: 18px 7%;
+            font-size: 25px;
+            font-weight: bold;
+        }
+        .card {
+            max-width: 600px;
+            margin: 45px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 18px #00000012;
+            text-align: center;
+        }
+        .avatar {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: #1877f2;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+        .bio {
+            margin: 25px 0;
+            padding: 18px;
+            background: #f0f2f5;
+            border-radius: 10px;
+            overflow-wrap: anywhere;
+        }
+        .btn {
+            display: inline-block;
+            margin: 5px;
+            padding: 12px 18px;
+            background: #1877f2;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+        .back { background: #65676b; }
+    </style>
+</head>
+<body>
+    <header>ConnectHub</header>
+
+    <main class="card">
+        <div class="avatar">{{ request.user.username|first|upper }}</div>
+
+        <h1>{{ request.user.username }}</h1>
+        <p>ConnectHub Member</p>
+
+        <div class="bio">
+            <strong>About Me</strong>
+            <p>{{ profile.bio|default:"No bio added yet." }}</p>
+        </div>
+
+        <a class="btn" href="{% url 'edit_profile' %}">Edit Profile</a>
+        <a class="btn back" href="{% url 'home' %}">Back to Home</a>
+    </main>
+</body>
+</html>
